@@ -46,6 +46,54 @@ const searchStar = async () => {
   }
   App.setSearchStatus("Search Star Result<br>"+ vMsg);
 }
+// exchange stars
+const exchangeStar = async () => {
+  const instance = await StarNotary.deployed();
+  const firstId = document.getElementById("exchangeFirstStarId").value;
+  const secondId = document.getElementById("exchangeSecondStarId").value;
+
+
+  await instance.exchangeStars(firstId, secondId, {from: account})
+
+  let vRet1 = await instance.tokenIdToStarInfo.call(firstId);
+  let vNewFirstOwner = vRet1[2];
+
+  let vRet2 = await instance.tokenIdToStarInfo.call(secondId);
+  let vNewSecondOwner = vRet2[2];
+
+  let vMsg = "";  
+  if (vNewFirstOwner == "0x0000000000000000000000000000000000000000" || vNewSecondOwner == "0x0000000000000000000000000000000000000000")
+  {
+    vMsg = "Exchange not executed";
+  }
+  else
+  {
+    vMsg = "First Star Onwer updated: "+ vNewFirstOwner +"<br>Second Star Owner updated: "+ vNewSecondOwner;
+  }
+  App.setExchangeStatus("Exchange Star Result<br>"+ vMsg);
+}
+// transfer stars
+const transferStar = async () => {
+  const instance = await StarNotary.deployed();
+  const starId = document.getElementById("transferStarId").value;
+  const transferAddress = document.getElementById("transferAddress").value;
+
+  await instance.transferStar(starId, transferAddress, {from: account})
+
+  let vRet1 = await instance.tokenIdToStarInfo.call(starId);
+  let vNewOwner = vRet1[2];
+
+  let vMsg = "";  
+  if (vNewOwner == "0x0000000000000000000000000000000000000000")
+  {
+    vMsg = "Transfer not executed";
+  }
+  else
+  {
+    vMsg = "Transfer Star new Owner: "+ vNewOwner;
+  }
+  App.setTransferStatus("Transfer Star Result<br>"+ vMsg);
+}
 //
 
 const App = {
@@ -77,10 +125,21 @@ const App = {
     const status = document.getElementById('status')
     status.innerHTML = message
   },
+
   setSearchStatus: function (message) {
     const searchStatus = document.getElementById('searchStatus')
     searchStatus.innerHTML = message
   },    
+
+  setExchangeStatus: function (message) {
+    const exchangeStatus = document.getElementById('exchangeStatus')
+    exchangeStatus.innerHTML = message
+  }, 
+
+  setTransferStatus: function (message) {
+    const transferStatus = document.getElementById('transferStatus')
+    transferStatus.innerHTML = message
+  }, 
 
   createStar: function () {
     createStar();
@@ -89,7 +148,17 @@ const App = {
   searchStar: function (starId)
   {
     searchStar(starId);
-  }
+  },
+
+  exchangeStar: function (firstStarId, secondStarId)
+  {
+    exchangeStar(firstStarId, secondStarId);
+  },
+  
+  transferStar: function (starId, transferAddress)
+  {
+    transferStar(starId, transferAddress);
+  }  
 
 }
 

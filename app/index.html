@@ -29,9 +29,25 @@
   <BR>
   <span id="searchStatus"></span>
 
-    <br>
+  <hr size=1>
 
+  <h1>Exchange Star</h1>
+  <br><label for="exchangeStar">First ID:</label><input type="text" id="exchangeFirstStarId"></input>
+  <br><label for="exchangeStar">Second ID:</label><input type="text" id="exchangeSecondStarId"></input>
+  <br><br><button id="exchangeStarBtn" onclick="App.exchangeStar()">Exchange Star</button>
+  <BR>
+  <span id="exchangeStatus"></span>
 
+  <hr size=1>
+
+  <h1>Transfer Star</h1>
+  <br><label for="transferStar">Star ID:</label><input type="text" id="transferStarId"></input>
+  <br><label for="transferAddress">Transfer to (address):</label><input type="text" id="transferAddress"></input>
+  <br><br><button id="transferStarBtn" onclick="App.transferStar()">Transfer Star</button>
+  <BR>
+  <span id="transferStatus"></span>
+
+  <hr size=1>
 
 </body>
 </html>
