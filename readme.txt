@@ -1,6 +1,5 @@
-# Decentralized Star Notary Service - Starter Code
-# Student: Daniel Teodoro
 # Project 5
+# Decentralized Star Notary Service - Starter Code
 
 Your ERC-721 Token Name: 
     Awesome Star!
