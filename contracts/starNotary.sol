@@ -9,17 +9,18 @@ contract StarNotary is ERC721 {
     struct Star {
         string name;
         string symbol;
-        address owner;
     }
 
 
 
     mapping(uint256 => Star) public tokenIdToStarInfo;
+    mapping(uint256 => address) public tokenOwner;
     mapping(uint256 => uint256) public starsForSale;
 
     function createStar(string _name, string _symbol, uint256 _tokenId) public {
-        Star memory newStar = Star(_name, _symbol, msg.sender);
+        Star memory newStar = Star(_name, _symbol);
         tokenIdToStarInfo[_tokenId] = newStar;
+        tokenOwner[_tokenId] = msg.sender;
         _mint(msg.sender, _tokenId);
     }
 
@@ -27,7 +28,7 @@ contract StarNotary is ERC721 {
 // Add a function lookUptokenIdToStarInfo, that looks up the stars using the Token ID, and then returns the name of the star.
     function lookUptokenIdToStarInfo(uint256 _tokenId) public view returns (string Name, string Symbol, address Owner) {
         Star memory star = tokenIdToStarInfo[_tokenId];
-        return (star.name, star.symbol, star.owner);
+        return (star.name, star.symbol, tokenOwner[_tokenId]);
     }    
 //
 
@@ -59,13 +60,16 @@ contract StarNotary is ERC721 {
 //Do not worry about the price, just write code to exchange stars between users.
     function exchangeStars(uint256 _tokenIdSend, uint256 _tokenIdReceive) public payable {
 
-        require(tokenIdToStarInfo[_tokenIdSend].owner != tokenIdToStarInfo[_tokenIdReceive].owner);
+        require(ownerOf(_tokenIdSend) == msg.sender);
 
-        address OwnerSend = tokenIdToStarInfo[_tokenIdSend].owner;
-        address OwnerReceive = tokenIdToStarInfo[_tokenIdReceive].owner;
+        _removeTokenFrom(tokenOwner[_tokenIdSend], _tokenIdSend);
+        _addTokenTo(tokenOwner[_tokenIdReceive], _tokenIdSend);
 
-        tokenIdToStarInfo[_tokenIdSend].owner = OwnerReceive;
-        tokenIdToStarInfo[_tokenIdReceive].owner = OwnerSend;
+        _removeTokenFrom(tokenOwner[_tokenIdReceive], _tokenIdReceive);
+        _addTokenTo(tokenOwner[_tokenIdSend], _tokenIdReceive);
+
+        starsForSale[_tokenIdSend] = 0;
+        starsForSale[_tokenIdReceive] = 0;
 
     }
     
@@ -75,7 +79,15 @@ contract StarNotary is ERC721 {
 // The function should accept 2 arguments, the address to transfer the star to, and the token ID of the star.
 //
   function transferStar(uint256 _tokenId, address _toAddress) public payable {
-        tokenIdToStarInfo[_tokenId].owner = _toAddress;
+     //   tokenOwner[_tokenId] = _toAddress;
+
+        require(ownerOf(_tokenId) == msg.sender);
+
+        _removeTokenFrom(tokenOwner[_tokenId], _tokenId);
+        _addTokenTo(_toAddress, _tokenId);
+
+        tokenOwner[_tokenId] = _toAddress;
+
     }
 
 }

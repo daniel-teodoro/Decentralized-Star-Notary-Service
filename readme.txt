@@ -1,4 +1,4 @@
-# Project 5
+# Project 5 - v2
 # Decentralized Star Notary Service - Starter Code
 
 Your ERC-721 Token Name: 
@@ -8,13 +8,14 @@ Your ERC-721 Token Symbol:
     AWE
 
 Your “Token Address” on the rinkeby Network:
-    0x692206F698F7F04A622F8FA16961F067CC890037
-    https://rinkeby.etherscan.io/address/0x692206f698f7f04a622f8fa16961f067cc890037#
+    StarNotary: 0xa6bdf9dacfcd1bd3f25be76cc233ec53a1f7308f
+    https://rinkeby.etherscan.io/address/0xa6bdf9dacfcd1bd3f25be76cc233ec53a1f7308f#
+
 
 The "Transaction Hash" of the transfer of tokens from one rinkeby address to another rinkeby address. 
 (You can find this transaction hash using metamask or using the etherscan website)
-    0x210326ce0d3e94671df940099d9fe2766f3e4aa1bf48b560a95fb9b00555aeed
-    0x90b59ab91edb23ff2d8267ccca781e3cb293336577bcf8a13cd469e71442b13c
-    0xd35a6aa644c46ef22ad9d5d3b07d2414871cac162e7c6bc054ce267f45e6bd88
-    0xbd71768e531acc0dfe898c0f57a5f7bdaba909ae35b06f1ea895277bb38f3b48
+    https://rinkeby.etherscan.io/tx/0x494080ffc26c7b92107034434fb9fa8b00e5a851701b00b9d7c1cb4e0f7ad66f
+    https://rinkeby.etherscan.io/tx/0x602204e20d1163b39e97c15cdafdaf997eccc3028b70cb532ba24d38a1f35b01
+    https://rinkeby.etherscan.io/tx/0x7e4cad79e7000a484ccfb77b6f7adeffbb2e7df09981a6a66e81d56086876386
+    https://rinkeby.etherscan.io/tx/0x6bc1c8f30a5f4b7ad78420c559cb58a6a29b00b6d1fc34d0406d1d49081f6b48
     ...

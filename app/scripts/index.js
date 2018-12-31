@@ -29,22 +29,10 @@ const createStar = async () => {
 // Add a function lookUp to Lookup a star by ID using tokenIdToStarInfo()
 const searchStar = async () => {
   const instance = await StarNotary.deployed();
-  const id = document.getElementById("searchStarId").value;
-  await instance.tokenIdToStarInfo(id, {from: account});
-  let vRet1 = await instance.tokenIdToStarInfo.call(id);
-  let vStarName = vRet1[0];
-  let vStarSymbol = vRet1[1];
-  let vStarOwner = vRet1[2];
-  let vMsg = "";  
-  if (vStarOwner == "0x0000000000000000000000000000000000000000")
-  {
-    vMsg = "Star not found";
-  }
-  else
-  {
-    vMsg = "Star Name: "+ vStarName +"<br>Star Symbol: "+ vStarSymbol + "<br>Star Owner: "+ vStarOwner;
-  }
-  App.setSearchStatus("Search Star Result<br>"+ vMsg);
+  const searchStarId = document.getElementById("searchStarId").value;
+  let searchStarInfo = await instance.tokenIdToStarInfo(searchStarId, {from: account});
+  let searchStarOwner = await instance.ownerOf(searchStarId);
+  App.setSearchStatus("Name: " + searchStarInfo[0] +"<BR>Symbol: "+ searchStarInfo[1] + "<BR>Owner: "+ searchStarOwner);
 }
 // exchange stars
 const exchangeStar = async () => {
@@ -52,14 +40,10 @@ const exchangeStar = async () => {
   const firstId = document.getElementById("exchangeFirstStarId").value;
   const secondId = document.getElementById("exchangeSecondStarId").value;
 
-
   await instance.exchangeStars(firstId, secondId, {from: account})
 
-  let vRet1 = await instance.tokenIdToStarInfo.call(firstId);
-  let vNewFirstOwner = vRet1[2];
-
-  let vRet2 = await instance.tokenIdToStarInfo.call(secondId);
-  let vNewSecondOwner = vRet2[2];
+  let vNewFirstOwner = await instance.ownerOf(firstId);
+  let vNewSecondOwner = await instance.ownerOf(secondId);
 
   let vMsg = "";  
   if (vNewFirstOwner == "0x0000000000000000000000000000000000000000" || vNewSecondOwner == "0x0000000000000000000000000000000000000000")
@@ -80,8 +64,7 @@ const transferStar = async () => {
 
   await instance.transferStar(starId, transferAddress, {from: account})
 
-  let vRet1 = await instance.tokenIdToStarInfo.call(starId);
-  let vNewOwner = vRet1[2];
+  let vNewOwner = await instance.ownerOf(starId);  
 
   let vMsg = "";  
   if (vNewOwner == "0x0000000000000000000000000000000000000000")
@@ -90,7 +73,7 @@ const transferStar = async () => {
   }
   else
   {
-    vMsg = "Transfer Star new Owner: "+ vNewOwner;
+    vMsg = "Ok";
   }
   App.setTransferStatus("Transfer Star Result<br>"+ vMsg);
 }
@@ -185,10 +168,6 @@ window.addEventListener('load', function () {
       ' More info here: http://truffleframework.com/tutorials/truffle-and-metamask'
     )
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-
-    // infura rinkeby
-    // https://rinkeby.infura.io/v3/cd24fdb667e04f1e86637c7d65ddccd8
-    //window.web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/cd24fdb667e04f1e86637c7d65ddccd8'))
 
     // local
     window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:9545'))

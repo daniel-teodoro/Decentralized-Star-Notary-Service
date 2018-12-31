@@ -13,7 +13,7 @@ contract('StarNotary', async (accs) => {
   it('can Create a Star', async() => {
     let tokenId = 1;
     await instance.createStar('Awesome Star!','AWE', tokenId, {from: accounts[0]})
-    assert.deepEqual(await instance.tokenIdToStarInfo.call(tokenId), ['Awesome Star!', 'AWE', accounts[0]] )
+    assert.deepEqual(await instance.tokenIdToStarInfo.call(tokenId), ['Awesome Star!', 'AWE'] )
   });
 
 
@@ -88,13 +88,13 @@ it('2 users can exchange their stars', async() => {
   await instance.createStar('Star 1','ST1', starId1, {from: user1})
   await instance.createStar('Star 2','ST2', starId2, {from: user2})
 
-  await instance.exchangeStars(starId1, starId2)
+  assert.equal(await instance.ownerOf.call(starId1), user1);
+  assert.equal(await instance.ownerOf.call(starId2), user2);
 
-  let vRet1 = await instance.tokenIdToStarInfo.call(starId1);
-  assert.equal(vRet1[2], user2)
+  await instance.exchangeStars(starId1, starId2, {from: user1})
 
-  let vRet2 = await instance.tokenIdToStarInfo.call(starId2);
-  assert.equal(vRet2[2], user1)
+  assert.equal(await instance.ownerOf.call(starId1), user2);
+  assert.equal(await instance.ownerOf.call(starId2), user1);
 
 });
 
@@ -106,9 +106,11 @@ it('Stars Tokens can be transferred from one address to another', async() => {
   
   await instance.createStar('Star 3','ST3', starId3, {from: user1})
 
-  await instance.transferStar(starId3, user2)
+  await instance.transferStar(starId3, user2, {from: user1})
 
-  let vRet1 = await instance.tokenIdToStarInfo.call(starId3);
-  assert.equal(vRet1[2], user2)
+  //let vRet1 = await instance.tokenIdToStarInfo.call(starId3);
+  //assert.equal(vRet1[2], user2)
+
+  assert.equal(await instance.ownerOf.call(starId3), user2);
 
 });

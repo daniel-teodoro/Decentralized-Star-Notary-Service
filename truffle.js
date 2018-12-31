@@ -15,7 +15,7 @@ module.exports = {
     },
     rinkeby: {
       provider: function() {
-        return new HDWalletProvider("xxx", "xxx")
+        return new HDWalletProvider("frost bind scatter oyster satoshi original valid direct drip near usage panther", "https://rinkeby.infura.io/v3/cd24fdb667e04f1e86637c7d65ddccd8")
       },
       network_id: '4',
       gas: 4500000,
