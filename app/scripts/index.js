@@ -31,8 +31,15 @@ const searchStar = async () => {
   const instance = await StarNotary.deployed();
   const searchStarId = document.getElementById("searchStarId").value;
   let searchStarInfo = await instance.tokenIdToStarInfo(searchStarId, {from: account});
-  let searchStarOwner = await instance.ownerOf(searchStarId);
-  App.setSearchStatus("Name: " + searchStarInfo[0] +"<BR>Symbol: "+ searchStarInfo[1] + "<BR>Owner: "+ searchStarOwner);
+  if (searchStarInfo[0] == "")
+  {
+    App.setSearchStatus("Star not found");
+  }
+  else
+  {
+    let searchStarOwner = await instance.ownerOf(searchStarId);
+    App.setSearchStatus("Name: " + searchStarInfo[0] +"<BR>Symbol: "+ searchStarInfo[1] + "<BR>Owner: "+ searchStarOwner);
+  }
 }
 // exchange stars
 const exchangeStar = async () => {

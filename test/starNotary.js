@@ -70,12 +70,14 @@ contract('StarNotary', async (accs) => {
   // Write Tests for:
 
 // 1) The token name and token symbol are added properly.
-  it('Token name and symbol added properly', async() => {
-    let tokenId = 10;
-    await instance.createStar('Big Star!','BIG', tokenId, {from: accounts[0]})
-    let vRet = await instance.tokenIdToStarInfo.call(tokenId);
-    assert.equal(vRet[0], 'Big Star!' )
-    assert.equal(vRet[1], 'BIG' )
+  it('has a name', async function () {
+    const name = await instance.name();
+    assert.equal(name, 'Awesome Star!');
+  });
+  
+  it('has a symbol', async function () {
+    const symbol = await instance.symbol();
+    assert.equal(symbol, 'AWE');
   });
 
 // 2) 2 users can exchange their stars.
@@ -107,9 +109,6 @@ it('Stars Tokens can be transferred from one address to another', async() => {
   await instance.createStar('Star 3','ST3', starId3, {from: user1})
 
   await instance.transferStar(starId3, user2, {from: user1})
-
-  //let vRet1 = await instance.tokenIdToStarInfo.call(starId3);
-  //assert.equal(vRet1[2], user2)
 
   assert.equal(await instance.ownerOf.call(starId3), user2);
 
